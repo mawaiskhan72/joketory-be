@@ -11,26 +11,8 @@ NPM_CONFIG_PRODUCTION = "false"
 [build.install]
   [build.install.npm]
     includeDevDependencies = true
-
-[build.install]
-  [build.install.npm]
-    includeDevDependencies = true
-    nodeVersion = "18"
-
-[build.install]
-  [build.install.npm]
-    includeDevDependencies = true
-    nodeVersion = "18"
-
-[build.install]
-  [build.install.npm]
-    includeDevDependencies = true
     nodeVersion = "18"
     cache = true
 
-[build.install]
-  [build.install.npm]
-    includeDevDependencies = true
-    nodeVersion = "18"
-    cache = true
-    buildCommand = "npm run build"
+[build]
+  command = "npm run build"
