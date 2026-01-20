@@ -5,7 +5,6 @@ export default [
   {
     name: 'strapi::cors',
     config: {
-      enabled: true,
       origin: process.env.CORS_ORIGIN || '*', // Allow all origins by default, set CORS_ORIGIN in production
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
