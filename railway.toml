@@ -1,8 +1,8 @@
+# Railway configuration for Strapi
 [build]
 builder = "nixpacks"
-
-[deploy]
-startCommand = "npm run build && npm run start"
+command = "npm run build"
+watchPatterns = ["src/**/*"]
 
 [build.environment]
 NODE_ENV = "production"
@@ -14,16 +14,19 @@ NPM_CONFIG_PRODUCTION = "false"
     nodeVersion = "18"
     cache = true
 
-[build]
-  command = "npm run build"
-  watchPatterns = ["src/**/*"]
+[deploy]
+startCommand = "npm run build && npm run start"
 
-# Required environment variables (set these in Railway dashboard):
+# ============================================
+# REQUIRED ENVIRONMENT VARIABLES
+# ============================================
+# Set these in your Railway project settings:
+#
 # NODE_ENV=production
 # DATABASE_URL=your_railway_postgres_url?sslmode=require
-# ADMIN_JWT_SECRET=your_random_string
-# JWT_SECRET=your_random_string
-# API_TOKEN_SALT=your_random_string
-# TRANSFER_TOKEN_SALT=your_random_string
-# ENCRYPTION_KEY=your_random_string
+# ADMIN_JWT_SECRET=your_random_string_here
+# JWT_SECRET=your_random_string_here
+# API_TOKEN_SALT=your_random_string_here
+# TRANSFER_TOKEN_SALT=your_random_string_here
+# ENCRYPTION_KEY=your_random_string_here
 # APP_KEYS=key1,key2,key3,key4
