@@ -1,17 +1,26 @@
+import crypto from 'crypto';
+
 export default ({ env }) => {
   // Railway and most cloud providers set PORT automatically
   // Use process.env.PORT if available (Railway sets this), otherwise use env('PORT')
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : env.int('PORT', 1337);
   
-  // Get APP_KEYS from environment - provide empty array as default to prevent undefined
-  // In production, this MUST be set or Strapi will fail to start
+  // Get APP_KEYS from environment
   const appKeys = env.array('APP_KEYS', []);
+  const isProduction = process.env.NODE_ENV === 'production';
   
-  // Only use fallback keys in development
+  // Generate fallback keys if not provided (with warning in production)
   const keys = appKeys && appKeys.length > 0 
     ? appKeys 
-    : (process.env.NODE_ENV === 'production' 
-        ? [] // Will cause error in production if not set - this is intentional
+    : (isProduction 
+        ? (() => {
+            console.warn('⚠️  WARNING: APP_KEYS is not set! Generating temporary keys.');
+            console.warn('⚠️  This is NOT secure for production! Please set APP_KEYS in your Railway environment variables.');
+            // Generate 4 random keys for production fallback
+            return Array.from({ length: 4 }, () => 
+              crypto.randomBytes(32).toString('base64')
+            );
+          })()
         : ['dev-key-1', 'dev-key-2', 'dev-key-3', 'dev-key-4']
       );
   
