@@ -1,7 +1,9 @@
 import path from 'path';
 
 export default ({ env }) => {
-  const client = env('DATABASE_CLIENT', 'sqlite');
+  // Auto-detect PostgreSQL if DATABASE_URL is provided (Railway, Heroku, etc.)
+  const defaultClient = env('DATABASE_URL') ? 'postgres' : 'sqlite';
+  const client = env('DATABASE_CLIENT', defaultClient);
 
   const connections = {
     mysql: {
@@ -30,14 +32,17 @@ export default ({ env }) => {
         database: env('DATABASE_NAME', 'strapi'),
         user: env('DATABASE_USERNAME', 'strapi'),
         password: env('DATABASE_PASSWORD', 'strapi'),
-        ssl: env.bool('DATABASE_SSL', false) && {
-          key: env('DATABASE_SSL_KEY', undefined),
-          cert: env('DATABASE_SSL_CERT', undefined),
-          ca: env('DATABASE_SSL_CA', undefined),
-          capath: env('DATABASE_SSL_CAPATH', undefined),
-          cipher: env('DATABASE_SSL_CIPHER', undefined),
-          rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', true),
-        },
+        // Railway and most cloud providers require SSL
+        ssl: env('DATABASE_URL') 
+          ? { rejectUnauthorized: false } // For Railway/cloud providers
+          : env.bool('DATABASE_SSL', false) && {
+              key: env('DATABASE_SSL_KEY', undefined),
+              cert: env('DATABASE_SSL_CERT', undefined),
+              ca: env('DATABASE_SSL_CA', undefined),
+              capath: env('DATABASE_SSL_CAPATH', undefined),
+              cipher: env('DATABASE_SSL_CIPHER', undefined),
+              rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', true),
+            },
         schema: env('DATABASE_SCHEMA', 'public'),
       },
       pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 10) },

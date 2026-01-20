@@ -11,11 +11,11 @@ NPM_CONFIG_PRODUCTION = "false"
 [build.install]
   [build.install.npm]
     includeDevDependencies = true
-    nodeVersion = "18"
+    nodeVersion = "20"
     cache = true
 
 [deploy]
-startCommand = "npm run build && npm run start"
+startCommand = "npm run start"
 
 # ============================================
 # REQUIRED ENVIRONMENT VARIABLES
