@@ -4,6 +4,11 @@ export default {
     maxLimit: 100,
     withCount: true,
   },
-  // GraphQL is disabled - not installed in package.json
-  // If you need GraphQL, install: npm install @strapi/plugin-graphql
+  graphql: {
+    enabled: true,
+    config: {
+      defaultLimit: 10,
+      maxLimit: 20,
+    },
+  },
 };
