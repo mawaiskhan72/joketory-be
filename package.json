@@ -1,0 +1,44 @@
+{
+  "name": "joketary-be",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "seed:example": "node ./scripts/seed.js",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5.33.3",
+    "@strapi/plugin-users-permissions": "5.33.3",
+    "@strapi/strapi": "5.33.3",
+    "autoprefixer": "^10.4.23",
+    "better-sqlite3": "12.4.1",
+    "fs-extra": "^10.0.0",
+    "mime-types": "^2.1.27",
+    "postcss": "^8.5.6",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0",
+    "tailwindcss": "^4.1.18"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=24.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "2664495a-8eb0-43c6-ae74-8681d821f4a5",
+    "installId": "98103ca3086ed638a0300ac73994acc5769195f773fb5ac6fbf2e459aa22e65d"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.11"
+  }
+}

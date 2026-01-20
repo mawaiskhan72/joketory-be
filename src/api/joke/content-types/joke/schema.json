@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jokes",
+  "info": {
+    "singularName": "joke",
+    "pluralName": "jokes",
+    "displayName": "joke"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "text",
+      "required": true
+    },
+    "uplodedTime": {
+      "type": "datetime"
+    },
+    "category": {
+      "type": "string",
+      "required": true
+    },
+    "isPublished": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "author": {
+      "type": "string",
+      "default": "Awais khan"
+    }
+  }
+}
