@@ -16,3 +16,14 @@ NPM_CONFIG_PRODUCTION = "false"
 
 [build]
   command = "npm run build"
+  watchPatterns = ["src/**/*"]
+
+# Required environment variables (set these in Railway dashboard):
+# NODE_ENV=production
+# DATABASE_URL=your_railway_postgres_url?sslmode=require
+# ADMIN_JWT_SECRET=your_random_string
+# JWT_SECRET=your_random_string
+# API_TOKEN_SALT=your_random_string
+# TRANSFER_TOKEN_SALT=your_random_string
+# ENCRYPTION_KEY=your_random_string
+# APP_KEYS=key1,key2,key3,key4
