@@ -1,0 +1,13 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm start"
+
+[build.environment]
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"
+
+[build.install]
+  [build.install.npm]
+    includeDevDependencies = true
