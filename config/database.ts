@@ -25,17 +25,20 @@ export default ({ env }) => {
       pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 10) },
     },
     postgres: {
-      connection: {
-        connectionString: env('DATABASE_URL'),
-        host: env('DATABASE_HOST', 'localhost'),
-        port: env.int('DATABASE_PORT', 5432),
-        database: env('DATABASE_NAME', 'strapi'),
-        user: env('DATABASE_USERNAME', 'strapi'),
-        password: env('DATABASE_PASSWORD', 'strapi'),
-        // Railway and most cloud providers require SSL
-        ssl: env('DATABASE_URL') 
-          ? { rejectUnauthorized: false } // For Railway/cloud providers
-          : env.bool('DATABASE_SSL', false) && {
+      connection: env('DATABASE_URL')
+        ? {
+            // Use connectionString for Railway/cloud providers (DATABASE_URL contains all connection info)
+            connectionString: env('DATABASE_URL'),
+            ssl: { rejectUnauthorized: false }, // Required for Railway/cloud providers
+          }
+        : {
+            // Use individual connection parameters for local development
+            host: env('DATABASE_HOST', 'localhost'),
+            port: env.int('DATABASE_PORT', 5432),
+            database: env('DATABASE_NAME', 'strapi'),
+            user: env('DATABASE_USERNAME', 'strapi'),
+            password: env('DATABASE_PASSWORD', 'strapi'),
+            ssl: env.bool('DATABASE_SSL', false) && {
               key: env('DATABASE_SSL_KEY', undefined),
               cert: env('DATABASE_SSL_CERT', undefined),
               ca: env('DATABASE_SSL_CA', undefined),
@@ -43,8 +46,8 @@ export default ({ env }) => {
               cipher: env('DATABASE_SSL_CIPHER', undefined),
               rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', true),
             },
-        schema: env('DATABASE_SCHEMA', 'public'),
-      },
+            schema: env('DATABASE_SCHEMA', 'public'),
+          },
       pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 10) },
     },
     sqlite: {

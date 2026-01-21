@@ -5,6 +5,11 @@ export default ({ env }) => {
   // Use process.env.PORT if available (Railway sets this), otherwise use env('PORT')
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : env.int('PORT', 1337);
   
+  // Log port configuration for debugging
+  console.log(`🚀 Server starting on port: ${port}`);
+  console.log(`🌍 Host: ${env('HOST', '0.0.0.0')}`);
+  console.log(`🔧 NODE_ENV: ${process.env.NODE_ENV || 'not set'}`);
+  
   // Get APP_KEYS from environment
   const appKeys = env.array('APP_KEYS', []);
   const isProduction = process.env.NODE_ENV === 'production';
