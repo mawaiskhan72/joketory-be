@@ -5,6 +5,23 @@ export default ({ env }) => {
   const defaultClient = env('DATABASE_URL') ? 'postgres' : 'sqlite';
   const client = env('DATABASE_CLIENT', defaultClient);
 
+  // Helper to ensure DATABASE_URL has SSL parameters for Railway
+  const getDatabaseUrl = () => {
+    const dbUrl = env('DATABASE_URL');
+    if (!dbUrl) return null;
+    
+    // If DATABASE_URL already has query parameters, append sslmode, otherwise add it
+    if (dbUrl.includes('?')) {
+      // Check if sslmode is already present
+      if (!dbUrl.includes('sslmode=')) {
+        return `${dbUrl}&sslmode=require`;
+      }
+      return dbUrl;
+    } else {
+      return `${dbUrl}?sslmode=require`;
+    }
+  };
+
   const connections = {
     mysql: {
       connection: {
@@ -25,14 +42,20 @@ export default ({ env }) => {
       pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 10) },
     },
     postgres: {
-      connection: env('DATABASE_URL')
-        ? {
-            // Use connectionString for Railway/cloud providers (DATABASE_URL contains all connection info)
-            connectionString: env('DATABASE_URL'),
-            ssl: { rejectUnauthorized: false }, // Required for Railway/cloud providers
-          }
-        : {
-            // Use individual connection parameters for local development
+      connection: (() => {
+        const dbUrl = getDatabaseUrl();
+        
+        if (dbUrl) {
+          // Use connectionString for Railway/cloud providers
+          console.log('📦 Using DATABASE_URL for PostgreSQL connection');
+          return {
+            connectionString: dbUrl,
+            // SSL is handled via connectionString parameters (sslmode=require)
+          };
+        } else {
+          // Use individual connection parameters for local development
+          console.log('📦 Using individual connection parameters for PostgreSQL');
+          return {
             host: env('DATABASE_HOST', 'localhost'),
             port: env.int('DATABASE_PORT', 5432),
             database: env('DATABASE_NAME', 'strapi'),
@@ -47,7 +70,9 @@ export default ({ env }) => {
               rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', true),
             },
             schema: env('DATABASE_SCHEMA', 'public'),
-          },
+          };
+        }
+      })(),
       pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 10) },
     },
     sqlite: {
@@ -57,6 +82,15 @@ export default ({ env }) => {
       useNullAsDefault: true,
     },
   };
+
+  // Log database configuration
+  console.log(`🗄️  Database client: ${client}`);
+  if (client === 'postgres' && env('DATABASE_URL')) {
+    const dbUrl = env('DATABASE_URL');
+    // Log a masked version of the URL (hide password)
+    const maskedUrl = dbUrl.replace(/:[^:@]+@/, ':****@');
+    console.log(`🗄️  Database URL: ${maskedUrl}`);
+  }
 
   return {
     connection: {
